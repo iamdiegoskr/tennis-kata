@@ -1,10 +1,10 @@
 
 public class TennisGame1 implements TennisGame {
     
-    private int m_score1 = 0;
-    private int m_score2 = 0;
-    private String player1Name;
-    private String player2Name;
+    private int scorePlayerOne = 0;
+    private int scorePlayerTwo = 0;
+    private final String player1Name;
+    private final String player2Name;
 
     public TennisGame1(String player1Name, String player2Name) {
         this.player1Name = player1Name;
@@ -12,65 +12,98 @@ public class TennisGame1 implements TennisGame {
     }
 
     public void wonPoint(String playerName) {
-        if (playerName == "player1")
-            m_score1 += 1;
+        if (playerName.equals(this.player1Name))
+            scorePlayerOne += 1;
         else
-            m_score2 += 1;
+            scorePlayerTwo += 1;
     }
 
     public String getScore() {
         String score = "";
-        int tempScore=0;
-        if (m_score1==m_score2)
-        {
-            switch (m_score1)
-            {
-                case 0:
-                        score = "Love-All";
-                    break;
-                case 1:
-                        score = "Fifteen-All";
-                    break;
-                case 2:
-                        score = "Thirty-All";
-                    break;
-                default:
-                        score = "Deuce";
-                    break;
-                
-            }
-        }
-        else if (m_score1>=4 || m_score2>=4)
-        {
-            int minusResult = m_score1-m_score2;
-            if (minusResult==1) score ="Advantage player1";
-            else if (minusResult ==-1) score ="Advantage player2";
-            else if (minusResult>=2) score = "Win for player1";
-            else score ="Win for player2";
-        }
-        else
-        {
-            for (int i=1; i<3; i++)
-            {
-                if (i==1) tempScore = m_score1;
-                else { score+="-"; tempScore = m_score2;}
-                switch(tempScore)
-                {
-                    case 0:
-                        score+="Love";
-                        break;
-                    case 1:
-                        score+="Fifteen";
-                        break;
-                    case 2:
-                        score+="Thirty";
-                        break;
-                    case 3:
-                        score+="Forty";
-                        break;
-                }
-            }
+        if(scorePlayerOne==scorePlayerTwo){
+            score = getTieScore();
+        }else if(scorePlayerOne >=4 || scorePlayerTwo>=4){
+            score = getAdvantage();
+        }else{
+            score = temporaryScore(score);
         }
         return score;
+    }
+
+    private String temporaryScore(String score) {
+        for (int i=1; i<3; i++)
+        {
+            score = score(score, i);
+        }
+        return score;
+    }
+
+    private String score(String score, int i) {
+
+        int tempScore;
+        if(i==1){
+            tempScore = scorePlayerOne;
+        }else{
+            score+="-";
+            tempScore = scorePlayerTwo;
+        }
+
+        return scoreZeroToThree(score, tempScore);
+    }
+
+    private String scoreZeroToThree(String score, int tempScore) {
+        switch(tempScore)
+        {
+            case 0:
+                score +="Love";
+                break;
+            case 1:
+                score +="Fifteen";
+                break;
+            case 2:
+                score +="Thirty";
+                break;
+            case 3:
+                score +="Forty";
+                break;
+            default:
+                score +="";
+        }
+        return score;
+    }
+
+    private String getAdvantage() {
+        int minusResult = scorePlayerOne - scorePlayerTwo;
+        String score = "";
+        StringBuilder stringBuilder = new StringBuilder();
+        switch (minusResult){
+            case 1:
+                score = stringBuilder.append("Advantage ").append(this.player1Name).toString();
+                break;
+            case -1:
+                score = stringBuilder.append("Advantage ").append(this.player2Name).toString();
+                break;
+            default:
+                if ((minusResult >= 2)) {
+                    score = stringBuilder.append("Win for ").append(this.player1Name).toString();
+                } else {
+                    score = stringBuilder.append("Win for ").append(this.player2Name).toString();
+                }
+        }
+        return score;
+    }
+
+    private String getTieScore() {
+        switch (this.scorePlayerOne)
+        {
+            case 0:
+                    return "Love-All";
+            case 1:
+                    return "Fifteen-All";
+            case 2:
+                    return "Thirty-All";
+            default:
+                    return "Deuce";
+        }
     }
 }
