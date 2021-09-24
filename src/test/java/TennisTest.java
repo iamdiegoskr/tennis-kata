@@ -3,11 +3,14 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import sofka.com.tennis.TennisGame;
+import sofka.com.tennis.TennisGame1;
+import sofka.com.tennis.TennisGame2;
+import sofka.com.tennis.TennisGame3;
 
 @RunWith(Parameterized.class)
 public class TennisTest {
